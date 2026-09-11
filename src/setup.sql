@@ -29,3 +29,141 @@ VALUES (
 		'hello@unityserve.org',
 		'unityserve-logo.png'
 	);
+
+-- Query all tables
+SELECT * FROM organization;
+
+/* Create Service Project table */
+CREATE TABLE service_project (
+	project_id SERIAL PRIMARY KEY,
+	organization_id INTEGER NOT NULL,
+	title VARCHAR (150) NOT NULL,
+	description TEXT NOT NULL,
+	location VARCHAR(255) NOT NULL,
+	project_date DATE NOT NULL,
+	FOREIGN KEY (organization_id) REFERENCES organization (organization_id)
+);
+
+-- Insert data into the project table
+INSERT INTO service_project (organization_id, title, description, location, project_date)
+	VALUES
+	(
+	    1,
+	    'Community Center Renovation',
+	    'Volunteers will help renovate and improve a local community center.',
+	    'Monrovia Community Center',
+	    '2026-10-05'
+	),
+	(
+	    1,
+	    'School Building Repair',
+	    'Volunteers will assist with repairing classrooms and improving the school environment.',
+	    'Central High School',
+	    '2026-10-12'
+	),
+	(
+	    1,
+	    'Public Park Improvement',
+	    'Volunteers will clean and improve facilities in a public park.',
+	    'Paynesville Park',
+	    '2026-10-19'
+	),
+	(
+	    1,
+	    'Community Library Construction',
+	    'Volunteers will assist with construction work for a community library.',
+	    'New Kru Town',
+	    '2026-10-26'
+	),
+	(
+	    1,
+	    'Neighborhood Drainage Project',
+	    'Volunteers will help improve drainage infrastructure in the neighborhood.',
+	    'Sinkor Community',
+	    '2026-11-02'
+	),
+	(
+	    2,
+	    'Community Garden Project',
+	    'Volunteers will establish a vegetable garden for the local community.',
+	    'Paynesville Community Garden',
+	    '2026-10-07'
+	),
+	(
+	    2,
+	    'Urban Farming Workshop',
+	    'Volunteers will teach residents basic urban farming techniques.',
+	    'Monrovia Youth Center',
+	    '2026-10-14'
+	),
+	(
+	    2,
+	    'Tree Planting Campaign',
+	    'Volunteers will plant trees to improve the local environment.',
+	    'Paynesville',
+	    '2026-10-21'
+	),
+	(
+	    2,
+	    'Food Sustainability Program',
+	    'Volunteers will educate families about sustainable food production.',
+	    'Sinkor Community',
+	    '2026-10-28'
+	),
+	(
+	    2,
+	    'School Vegetable Garden',
+	    'Volunteers will establish a vegetable garden at a local school.',
+	    'Monrovia Public School',
+	    '2026-11-04'
+	),
+	(
+	    3,
+	    'Community Cleanup',
+	    'Volunteers will clean streets and public spaces in the community.',
+	    'Central Monrovia',
+	    '2026-10-09'
+	),
+	(
+	    3,
+	    'Food Donation Drive',
+	    'Volunteers will collect and distribute food to families in need.',
+	    'Paynesville',
+	    '2026-10-16'
+	),
+	(
+	    3,
+	    'Youth Volunteer Program',
+	    'Volunteers will organize activities that encourage young people to serve their communities.',
+	    'Monrovia Youth Center',
+	    '2026-10-23'
+	),
+	(
+	    3,
+	    'Senior Support Program',
+	    'Volunteers will assist elderly community members with basic household needs.',
+	    'Sinkor',
+	    '2026-10-30'
+	),
+	(
+	    3,
+	    'Neighborhood Beautification',
+	    'Volunteers will improve public spaces through cleaning and landscaping activities.',
+	    'New Kru Town',
+	    '2026-11-06'
+	);
+
+-- Verify the data 
+SELECT * FROM service_project;
+
+-- Join the two tables and display
+SELECT
+    service_project.project_id,
+    service_project.title,
+    service_project.description,
+    service_project.location,
+    service_project.project_date,
+    organization.name
+FROM public.organization
+JOIN public.service_project
+    ON organization.organization_id = service_project.organization_id;
