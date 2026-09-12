@@ -187,23 +187,40 @@ VALUES
 SELECT * FROM categories;
 
 /* Create a linking/bridge table between service project and category
-	that establishes many -> many relationships */
+   that establishes a many-to-many relationship */
+
 CREATE TABLE project_category (
-	project_id INTEGER NOT NULL, -- 1 -> MANY & VICE VERSA
-	category_id INTEGER NOT NULL, --	1 -> many & vice versa
-	PRIMARY KEY (project_id, category_id), -- Creates composite primary key
-	FOREIGN KEY (project_id) REFERENCES service_project (project_id),
-	FOREIGN KEY (category_id) REFERENCES categories (category_id)
+    project_id INTEGER NOT NULL,
+    category_id INTEGER NOT NULL,
+    PRIMARY KEY (project_id, category_id),
+    FOREIGN KEY (project_id) REFERENCES service_project (project_id),
+    FOREIGN KEY (category_id) REFERENCES categories (category_id)
 );
 
--- Add category to projects (many -> many relationships)
+/* Associate service projects with categories */
+
 INSERT INTO project_category (project_id, category_id)
 VALUES
     (1, 4),
     (1, 6),
     (2, 2),
     (2, 6),
-    (3, 1)
-	
--- Verify the bridge/linking table 
+    (3, 1),
+    (4, 2),
+    (4, 6),
+    (5, 1),
+    (6, 1),
+    (6, 3),
+    (7, 2),
+    (8, 1),
+    (9, 3),
+    (10, 2),
+    (11, 1),
+    (12, 3),
+    (13, 5),
+    (14, 7),
+    (15, 4);
+
+/* Verify the Project_Category table */
+
 SELECT * FROM project_category;
