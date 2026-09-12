@@ -1,5 +1,4 @@
 /* Create organizations Table */
-
 CREATE TABLE organization (
 	organization_id SERIAL PRIMARY KEY,
 	name VARCHAR(150) NOT NULL,
@@ -9,7 +8,6 @@ CREATE TABLE organization (
 );
 
 /* Insert Data into organization table */
-
 INSERT INTO organization (name, description, contact_email, logo_filename) 
 VALUES (
 	'BrightFuture Builders',
@@ -168,26 +166,11 @@ FROM public.organization
 JOIN public.service_project
     ON organization.organization_id = service_project.organization_id;
 
-
 /* Create service category table */
 CREATE TABLE categories (
 	category_id SERIAL PRIMARY KEY,
 	category_name VARCHAR(150) NOT NULL
 );
-
-SELECT * FROM categories;
-
-/* Create a linking/bridge table between service project and category
-	that establishes many -> many relationships */
-CREATE TABLE project_category (
-	project_id INTEGER NOT NULL, -- 1 -> MANY & VICE VERSA
-	category_id INTEGER NOT NULL, --	1 -> many & vice versa
-	PRIMARY KEY (project_id, category_id), -- Creates composite primary key
-	FOREIGN KEY (project_id) REFERENCES service_project (project_id),
-	FOREIGN KEY (category_id) REFERENCES categories (category_id)
-);
-
-SELECT * FROM project_category;
 
 -- Insert data into the category table
 INSERT INTO categories (category_name)
@@ -203,6 +186,16 @@ VALUES
 -- Verify the categories
 SELECT * FROM categories;
 
+/* Create a linking/bridge table between service project and category
+	that establishes many -> many relationships */
+CREATE TABLE project_category (
+	project_id INTEGER NOT NULL, -- 1 -> MANY & VICE VERSA
+	category_id INTEGER NOT NULL, --	1 -> many & vice versa
+	PRIMARY KEY (project_id, category_id), -- Creates composite primary key
+	FOREIGN KEY (project_id) REFERENCES service_project (project_id),
+	FOREIGN KEY (category_id) REFERENCES categories (category_id)
+);
+
 -- Add category to projects (many -> many relationships)
 INSERT INTO project_category (project_id, category_id)
 VALUES
@@ -210,23 +203,7 @@ VALUES
     (1, 6),
     (2, 2),
     (2, 6),
-    (3, 1),
-    (3, 4),
-    (4, 2),
-    (4, 6),
-    (5, 1),
-    (5, 4),
-    (6, 1),
-    (6, 3),
-    (7, 2),
-    (8, 1),
-    (9, 3),
-    (10, 2),
-    (11, 1),
-    (12, 3),
-    (13, 5),
-    (14, 7),
-    (15, 4);
-
-	-- Verify the bridge/linking table 
+    (3, 1)
+	
+-- Verify the bridge/linking table 
 SELECT * FROM project_category;
