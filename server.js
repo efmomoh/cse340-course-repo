@@ -4,6 +4,7 @@ import path from "path";
 import { testConnection } from "./src/models/db.js";
 import { getAllOrganizations } from "./src/models/organizations.js";
 import { getAllProjects } from "./src/models/projects.js";
+import { getAllCategories } from "./src/models/categories.js";
 
 console.log("Hello, Node.js!");
 
@@ -51,8 +52,10 @@ app.get("/projects", async (req, res) => {
 
 // Categories
 app.get("/categories", async (req, res) => {
+    const categories = await getAllCategories();
+    // console.log("categories:", categories);
     const title = "Service Categories";
-    res.render("categories", { title });
+    res.render("categories", { title, categories });
 });
 
 app.listen(PORT, async () => {
