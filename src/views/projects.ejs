@@ -6,7 +6,7 @@
             <%= title %>
         </h1>
 
-        <h2>Upcoming Service Projects</h2>
+        <!-- <h2>Upcoming Service Projects</h2> -->
 
         <ul class="project-list">
             <% projects.forEach(project=> { %>
@@ -14,9 +14,16 @@
                 <li><strong>
                         <%= new Date(project.project_date).toLocaleDateString('en-US', { year: 'numeric' , month: 'long'
                             , day: 'numeric' }) %>:
-                            <%= project.title %>
-                                (<%= project.name %>)
-                    </strong></li>
+                    </strong>
+                    <a href="/project/<%= project.project_id %>">
+                        <%= project.title %>
+                    </a>:
+                    <strong>
+                        (<a href="/organization/<%= project.organization_id %>">
+                            <%= project.name %>
+                        </a>)
+                    </strong>
+                </li>
                 <% }); %>
         </ul>
     </main>
