@@ -19,3 +19,18 @@
             <li><a href="/categories">Categories</a></li>
         </ul>
     </nav>
+
+    <!-- Display Flash Messages in all templates -->
+    <% const messages=flash(); %>
+
+        <% Object.keys(messages).forEach(type=> { %>
+            <% if (messages[type].length> 0) { %>
+
+                <% messages[type].forEach(msg=> { %>
+                    <div class="alert <%= type %>">
+                        <%= msg %>
+                    </div>
+                    <% }); %>
+
+                        <% } %>
+                            <% }); %>

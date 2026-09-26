@@ -9,8 +9,12 @@
     --color-border: #d5e2eb;
 
     --border-radius: 8px;
-    --box-shadow: 0 3px 10px rgba(0, 0, 0, .08);
+    --box-shadow: 0 3px 10px rgba(0, 0, 0, 0.08);
 }
+
+/* =========================
+   Global Styles
+   ========================= */
 
 * {
     box-sizing: border-box;
@@ -30,6 +34,10 @@ body {
     font: 16px/1.6 Arial, Helvetica, sans-serif;
     display: flex;
     flex-direction: column;
+
+    /* =========================
+       Navigation
+       ========================= */
 
     nav {
         background: var(--color-primary);
@@ -68,6 +76,10 @@ body {
         }
     }
 
+    /* =========================
+       Main Content
+       ========================= */
+
     main {
         width: min(100% - 32px, 1000px);
         margin: auto;
@@ -89,12 +101,22 @@ body {
             text-align: center;
         }
 
+        h3 {
+            margin: 24px 0 12px;
+            color: var(--color-primary);
+            text-align: center;
+        }
+
         p {
             max-width: 750px;
             margin: 0 auto 24px;
             color: var(--color-text-muted);
             text-align: center;
         }
+
+        /* =========================
+           General Lists
+           ========================= */
 
         ul {
             max-width: 800px;
@@ -116,6 +138,10 @@ body {
             }
         }
 
+        /* =========================
+           Main Logo
+           ========================= */
+
         .main-logo {
             display: block;
             width: min(100%, 400px);
@@ -124,6 +150,10 @@ body {
             border-radius: var(--border-radius);
             box-shadow: var(--box-shadow);
         }
+
+        /* =========================
+           Organization List
+           ========================= */
 
         .organization-list {
             li {
@@ -144,6 +174,10 @@ body {
             }
         }
 
+        /* =========================
+           Category List
+           ========================= */
+
         .category-list {
             li {
                 border-left: 5px solid var(--color-secondary);
@@ -151,12 +185,20 @@ body {
             }
         }
 
+        /* =========================
+           Project List
+           ========================= */
+
         .project-list {
             li {
                 color: var(--color-text-muted);
             }
         }
     }
+
+    /* =========================
+       Footer
+       ========================= */
 
     footer {
         padding: 20px;
@@ -167,12 +209,15 @@ body {
         p {
             margin: 0;
             color: var(--color-surface);
-            font-size: .9rem;
+            font-size: 0.9rem;
         }
     }
 }
 
-/* Accessibility */
+/* =========================
+   Accessibility / Links
+   ========================= */
+
 a {
     text-decoration-thickness: 2px;
     text-underline-offset: 3px;
@@ -183,7 +228,159 @@ a {
     }
 }
 
-/* Tablet */
+/* =========================
+   Flash Messages
+   ========================= */
+
+.alert {
+    max-width: 1000px;
+    margin: 20px auto;
+    padding: 15px;
+    border: 1px solid transparent;
+    border-radius: 4px;
+}
+
+.alert.success {
+    color: #155724;
+    background-color: #d4edda;
+    border-color: #c3e6cb;
+}
+
+.alert.error {
+    color: #721c24;
+    background-color: #f8d7da;
+    border-color: #f5c6cb;
+}
+
+.alert.warning {
+    color: #856404;
+    background-color: #fff3cd;
+    border-color: #ffeeba;
+}
+
+.alert.info {
+    color: #0c5460;
+    background-color: #d1ecf1;
+    border-color: #bee5eb;
+}
+
+/* =========================
+   Forms
+   ========================= */
+
+form {
+    width: 100%;
+    max-width: 600px;
+    margin: 20px 0;
+}
+
+.form-group {
+    margin-bottom: 20px;
+}
+
+.form-group label {
+    display: block;
+    margin-bottom: 6px;
+    font-weight: 600;
+}
+
+.form-group input,
+.form-group textarea,
+.form-group select {
+    width: 100%;
+    padding: 10px 12px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    background-color: var(--color-surface);
+    color: var(--color-text);
+    font: inherit;
+}
+
+.form-group textarea {
+    min-height: 120px;
+    resize: vertical;
+}
+
+.form-group select {
+    cursor: pointer;
+}
+
+.form-group input:focus,
+.form-group textarea:focus,
+.form-group select:focus {
+    outline: none;
+    border-color: var(--color-secondary);
+    box-shadow: 0 0 0 2px rgba(36, 87, 122, 0.15);
+}
+
+/* Form Buttons */
+
+form button {
+    padding: 10px 18px;
+    border: none;
+    border-radius: 4px;
+    background-color: var(--color-primary);
+    color: var(--color-surface);
+    font-size: 1rem;
+    font-weight: 600;
+    cursor: pointer;
+}
+
+form button:hover {
+    background-color: var(--color-secondary);
+}
+
+form button:focus-visible {
+    outline: 3px solid var(--color-accent);
+    outline-offset: 3px;
+}
+
+/* =========================
+   Assign Categories
+   ========================= */
+
+.category-list {
+    margin: 20px 0;
+    padding: 15px;
+    border: 1px solid var(--color-border);
+    border-radius: 6px;
+    background-color: #f9f9f9;
+}
+
+.category-option {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    padding: 10px 12px;
+    margin-bottom: 6px;
+    border-radius: 4px;
+    background-color: var(--color-surface);
+}
+
+.category-option:last-child {
+    margin-bottom: 0;
+}
+
+.category-option:hover {
+    background-color: #f0f0f0;
+}
+
+.category-option input[type="checkbox"] {
+    width: 18px;
+    height: 18px;
+    cursor: pointer;
+}
+
+.category-option label {
+    flex: 1;
+    cursor: pointer;
+    font-size: 1rem;
+}
+
+/* =========================
+   Tablet
+   ========================= */
+
 @media (max-width: 700px) {
     body {
         main {
@@ -198,7 +395,10 @@ a {
     }
 }
 
-/* Mobile */
+/* =========================
+   Mobile
+   ========================= */
+
 @media (max-width: 480px) {
     body {
         nav {
@@ -242,13 +442,20 @@ a {
             }
         }
 
+        form {
+            width: 100%;
+        }
+
         footer {
             padding: 16px 10px;
         }
     }
 }
 
-/* Reduced motion */
+/* =========================
+   Reduced Motion
+   ========================= */
+
 @media (prefers-reduced-motion: reduce) {
     html {
         scroll-behavior: auto;
