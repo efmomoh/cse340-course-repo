@@ -1,18 +1,28 @@
 <!--Renders detail of a single category -->
 <%- include("partials/header") %>
     <main>
-        <h1><%= title %></h1>
-        <h2><%= categoryDetails.category_name %></h2>
+        <h1>
+            <%= title %>
+        </h1>
+        <h2>
+            <%= categoryDetails.category_name %>
+        </h2>
         <h3>Service Projects</h3>
 
         <ul class="project-list">
-            <% projects.forEach(project => { %>
+            <% projects.forEach(project=> { %>
                 <li>
                     <a href="/project/<%= project.project_id %>">
                         <%= project.title %>
                     </a>
                 </li>
-            <% }); %>
+                <% }); %>
         </ul>
+
+        <p>
+            <a href="/edit-category/<%= categoryDetails.category_id %>">
+                Edit Category
+            </a>
+        </p>
     </main>
     <%- include("partials/footer") %>
