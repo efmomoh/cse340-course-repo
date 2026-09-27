@@ -115,11 +115,46 @@ const createProject = async (title, description, location, date, organizationId)
     return result.rows[0].project_id;
 };
 
+// Create the model function
+const updateProject = async (
+    projectId,
+    title, 
+    description, 
+    location,
+    projectDate,
+    organizationId) => {
+    const query = `
+        UPDATE service_project
+        SET
+            title = $1,
+            description = $2, 
+            location = $3, 
+            project_date = $4,
+            organization_id = $5
+        WHERE project_id = $6
+        RETURNING *;
+    `;
+
+    const queryParams = [title, description, location, projectDate, organizationId, projectId];
+    const result = await db.query(query, queryParams);
+
+    if (result.rows.length === 0) {
+        throw new Error("Project update failed.");
+    }
+
+    if (process.env.ENABLE_SQL_LOGGING === "true") {
+        console.log("Updated project successfully with ID:", result.rows[0].project_id);
+    }
+
+    return result.rows[0].project_id;
+}
+
 // Export the model functions for use in other parts of the application
 export {
     getAllProjects,
     getProjectsByOrganizationId,
     getUpcomingProjects,
     getProjectDetails,
-    createProject
+    createProject,
+    updateProject
 };
