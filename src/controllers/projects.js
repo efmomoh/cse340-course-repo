@@ -1,8 +1,8 @@
 // Import any needed model functions
 import { body, validationResult } from "express-validator";
 import {
-    getUpcomingProjects,
-    getProjectDetails, createProject
+    getUpcomingProjects, getProjectDetails,
+    createProject, updateProject
 } from "../models/projects.js";
 import {
     getCategoriesByProjectId
@@ -75,7 +75,7 @@ const processNewProjectForm = async (req, res) => {
         // Redirect back to the new project form
         return res.redirect('/new-project');
     }
-    
+
     // Extract form data from req.body
     const { title, description, location, date, organizationId } = req.body;
 
@@ -91,11 +91,49 @@ const processNewProjectForm = async (req, res) => {
         res.redirect('/new-project');
     }
 }
+
+// Create show edit project form 
+const showEditProjectForm = async (req, res) => {
+    const projectId = req.params.id;
+
+    const projectDetails = await getProjectDetails(projectId);
+    const organizations = await getAllOrganizations();
+
+    const title = "Edit Service Project";
+
+    res.render("edit-project", { title, projectDetails, organizations });
+};
+
+// create process Edit Project Form
+const processEditProjectForm = async (req, res) => {
+       // Check for validation errors
+       const results = validationResult(req);
+       if (!results.isEmpty()) {
+           // Validation failed - loop through errors
+           results.array().forEach((error) => {
+               req.flash('error', error.msg);
+           });
+   
+           // Redirect back to the edit organization form
+           return res.redirect('/edit-project/' + req.params.id);
+    }
+    
+    // get project's ID
+    const projectId = req.params.id;
+    const { title, description, location, date, organizationId } = req.body;
+
+    await updateProject(projectId, title, description, location, date, organizationId);
+
+    req.flash('success', 'Service project updated successfully.');
+    res.redirect(`/project/${projectId}`);
+}
 // Export any controller functions that need to be used in routes.js file
 export {
     projectValidation,
     showProjectsPage,
     showProjectDetailsPage,
     showNewProjectForm,
-    processNewProjectForm
+    processNewProjectForm,
+    showEditProjectForm,
+    processEditProjectForm
 };

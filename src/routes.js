@@ -10,7 +10,8 @@ import {
 import {
     showProjectsPage, showProjectDetailsPage,
     showNewProjectForm, processNewProjectForm,
-    projectValidation
+    projectValidation, showEditProjectForm,
+    processEditProjectForm
  } from "./controllers/projects.js";
 import {
     showCategoriesPage, showCategoryDetailsPage,
@@ -33,12 +34,14 @@ router.get("/new-organization", showNewOrganizationForm);
 router.get("/edit-organization/:id", showEditOrganizationForm);
 router.get("/new-project", showNewProjectForm);
 router.get("/assign-categories/:projectId", showAssignCategoriesForm);
+router.get("/edit-project/:id", showEditProjectForm);
 
 // Route to handle organization form submission
 router.post("/new-organization", organizationValidation, processNewOrganizationForm);
 router.post('/edit-organization/:id', organizationValidation, processEditOrganizationForm);
 router.post("/new-project", projectValidation, processNewProjectForm);
 router.post('/assign-categories/:projectId', processAssignCategoriesForm);
+router.post("/edit-project/:id", processEditProjectForm);
 
 // Error handling route for testing 500 errors
 router.get("/test-error", testErrorPage);
