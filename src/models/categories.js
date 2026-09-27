@@ -97,11 +97,37 @@ const updateCategoryAssignments = async (projectId, categoryIds) => {
     }
 };
 
+// Create category function
+const createCategory = async (categoryName) => {
+    const query = `
+        INSERT INTO categories (category_name)
+        VALUES ($1)
+        RETURNING category_id;
+    `;
+
+    const result = await db.query(query, [categoryName]);
+
+    return result.rows[0].category_id;
+};
+
+// create update category function
+const updateCategory = async (categoryId, categoryName) => {
+    const query = `
+        UPDATE categories
+        SET category_name = $1
+        WHERE category_id = $2;
+    `;
+
+    await db.query(query, [categoryName, categoryId]);
+};
+
 // Export the model functions
 export {
     getAllCategories,
     getCategoryDetails,
     getCategoriesByProjectId,
     getProjectsByCategoryId,
-    updateCategoryAssignments
+    updateCategoryAssignments,
+    createCategory,
+    updateCategory
 };
