@@ -222,5 +222,44 @@ VALUES
     (15, 4);
 
 /* Verify the Project_Category table */
-
 SELECT * FROM project_category;
+
+/* Create the Roles Table: Role-Based-Access-Control (RBAC) */
+CREATE TABLE roles (
+	role_id SERIAL PRIMARY KEY,
+	role_name VARCHAR (50) UNIQUE NOT NULL,
+	role_description TEXT
+);
+
+-- Insert data into roles table
+INSERT INTO roles (role_name, role_description)
+	VALUES ('user', 'Standard user with basic access'),
+			('admin', 'Administrator with full system access');
+
+-- Verify that the roles were inserted successfully.
+SELECT * FROM roles;
+
+/* Create the Users Table */
+CREATE TABLE users (
+	user_id SERIAL PRIMARY KEY,
+	name VARCHAR(100) NOT NULL,
+	email VARCHAR(100) UNIQUE NOT NULL,
+	password_hash VARCHAR(255) NOT NULL,
+	role_id INTEGER REFERENCES roles (role_id),
+	created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+);
+
+-- Verify that the USERS TABLE was created successfully
+SELECT * FROM users;
+
+-- Insert data into users table
+INSERT INTO users (name, email, password_hash, role_id)
+	VALUES ('testuser', 'test@example.com', 'placeholder_hash', 1);
+
+-- Join users and roles to see complete information (JOIN/BRIDGE TABLE)
+SELECT u.user_id, u.name, u.email, r.role_name, r.role_description
+	FROM users u
+	JOIN roles r ON u.role_id = r.role_id
+
+-- Delete the testuser
+DELETE FROM users WHERE email = 'test@example.com';
