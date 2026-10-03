@@ -19,10 +19,9 @@
                 <% }); %>
         </ul>
 
-        <p>
-            <a href="/edit-category/<%= categoryDetails.category_id %>">
-                Edit Category
-            </a>
-        </p>
+        <!-- Add a link to edit the category if the user is an admin -->
+        <% if (user && user.role_name==='admin' ) { %>
+            <p><a href="/edit-category/<%= categoryDetails.category_id %>">Edit Category</a></p>
+            <% } %>
     </main>
     <%- include("partials/footer") %>

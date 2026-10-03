@@ -20,9 +20,10 @@
                 <% }); %>
         </ul>
 
-        <p>
-            <a href="/new-category">Add a New Category</a>
-        </p>
+        <!-- Add a link to create a new category if the user is an admin -->
+        <% if (user && user.role_name==='admin' ) { %>
+            <p> <a href="/new-category">Add a New Category</a> </p>
+            <% } %>
     </main>
 
     <%- include("partials/footer") %>

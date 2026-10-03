@@ -60,6 +60,15 @@ app.use((req, res, next) => {
 
 // Middleware to make NODE_ENV available in all templates
 app.use((req, res, next) => {
+    res.locals.isLoggedIn = false; // Initialize isLoggedIn to false for all requests
+    if (req.session && req.session.user) { // Check if the user is logged in by checking the session
+        res.locals.isLoggedIn = true; // Set isLoggedIn to true if the user is logged in
+    }
+    
+    // Make the user object available in templates
+    // This allows you to access user information in your EJS templates, such as the user's name or role.
+    res.locals.user = req.session.user || null;
+
     res.locals.NODE_ENV = NODE_ENV;
     next();
 });
