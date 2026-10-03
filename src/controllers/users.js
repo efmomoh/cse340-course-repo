@@ -50,8 +50,8 @@ const processLoginForm = async (req, res) => {
             req.session.user = user;
 
             // Display a flash message for users/admins when they log in, showing their name and role
-            req.flash('success', `Welcome ${user.name} to the ${user.role_name} Dashboard!\
-                You've logged in successfully as a/an ${user.role_name}.`);
+            req.flash('success', `Welcome ${user.name.toUpperCase()} to the ${user.role_name.charAt(0).toUpperCase() + user.role_name.slice(1)} Dashboard!\
+                You've logged in successfully as a/an ${user.role_name.charAt(0).toUpperCase() + user.role_name.slice(1)}.`);
 
             if (res.locals.NODE_ENV === 'development') {
                 console.log('User logged in:', user);
