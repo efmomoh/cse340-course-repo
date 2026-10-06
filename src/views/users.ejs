@@ -1,0 +1,67 @@
+<%- include("partials/header") %>
+
+    <main class="users-page">
+        <section class="users-container">
+
+            <div class="users-header">
+                <div>
+                    <h1>
+                        <%= title %>
+                    </h1>
+                    <p>View all registered users and their assigned roles.</p>
+                </div>
+            </div>
+
+            <% if (users.length> 0) { %>
+
+                <div class="users-table-wrapper">
+                    <table class="users-table">
+                        <thead>
+                            <tr>
+                                <th>Name</th>
+                                <th>Email</th>
+                                <th>Role</th>
+                            </tr>
+                        </thead>
+
+                        <tbody>
+                            <% users.forEach(user=> { %>
+                                <tr>
+                                    <td class="user-name">
+                                        <%= user.name %>
+                                    </td>
+
+                                    <td>
+                                        <%= user.email %>
+                                    </td>
+
+                                    <td>
+                                        <span
+                                            class="role-badge <%= user.role_name === 'admin' ? 'admin-role' : 'user-role' %>">
+                                            <%= user.role_name %>
+                                        </span>
+                                    </td>
+                                </tr>
+                                <% }) %>
+                        </tbody>
+                    </table>
+                </div>
+
+                <% } else { %>
+
+                    <div class="no-users">
+                        <p>No registered users were found.</p>
+                    </div>
+
+                    <% } %>
+
+                        <div class="users-actions">
+                            <a class="dashboard-button" href="/dashboard">
+                                Return to Dashboard
+                            </a>
+                        </div>
+
+        </section>
+    </main>
+
+    <%- include("partials/footer") %>
