@@ -1,10 +1,62 @@
-<!--create a dashboard page that users can view after they log in-->
+<!-- Create a dashboard page that users can view after they log in -->
 
 <%- include('partials/header') %>
-<main>
-    <h1><%= title %></h1>
-     <h2>Dashboard</h2>
-     <p>Name: <%= name %></p>
-     <p>Username: <%= email %></p>
-</main>
-<%- include('partials/footer') %>
+
+    <main class="dashboard">
+
+        <div class="dashboard-card">
+
+            <h1>
+                <%= title %>
+            </h1>
+
+            <h2>
+                Welcome, <%= name.charAt(0).toUpperCase() + name.slice(1) %>!
+            </h2>
+
+            <p class="dashboard-message">
+                You've logged in successfully as a/an
+                <%= role.charAt(0).toUpperCase() + role.slice(1) %>.
+            </p>
+
+            <div class="dashboard-details">
+
+                <p>
+                    <strong>Name:</strong>
+                    <span>
+                        <%= name %>
+                    </span>
+                </p>
+
+                <p>
+                    <strong>Username:</strong>
+                    <span>
+                        <%= email %>
+                    </span>
+                </p>
+
+                <p>
+                    <strong>Role:</strong>
+                    <span class="dashboard-role">
+                        <%= role %>
+                    </span>
+                </p>
+
+            </div>
+
+            <!-- Add a link to view registered users if the user is an admin -->
+            <% if (role==='admin' ) { %>
+
+                <div class="dashboard-actions">
+                    <a class="dashboard-button" href="/users">
+                        View Registered Users
+                    </a>
+                </div>
+
+                <% } %>
+
+        </div>
+
+    </main>
+
+    <%- include('partials/footer') %>

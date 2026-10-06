@@ -263,3 +263,30 @@ SELECT u.user_id, u.name, u.email, r.role_name, r.role_description
 
 -- Delete the testuser
 DELETE FROM users WHERE email = 'test@example.com';
+
+-- Delete all users
+DELETE FROM users
+	WHERE email IN (
+    'efmomoh25@gmail.com',
+    'emomoh1@gmail.com',
+    'efmomoh3@gmail.com'
+);
+
+-- View all users and roles
+SELECT * FROM users;
+SELECT * FROM roles; 
+
+-- Update the dedicated admin testing account to have admin role by using a subquery
+UPDATE users 
+	SET role_id = (
+		SELECT role_id
+			FROM roles
+			WHERE role_name = 'admin')
+	WHERE email = 'admin@example.com';
+
+-- Verify the update by listing all users and their roles
+SELECT users.user_id, users.email, roles.role_name 
+	FROM users 
+	JOIN roles 
+	ON users.role_id = roles.role_id;
+

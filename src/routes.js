@@ -3,7 +3,7 @@ import express from "express";
 import {
     showUserRegistrationForm, processUserRegistrationForm,
     showLoginForm, processLoginForm, processLogout,
-    requireLogin, showDashboard, requireRole
+    requireLogin, showDashboard, requireRole, showUsersPage
 } from "./controllers/users.js";
 import { showHomePage } from "./controllers/index.js";
 import {
@@ -48,6 +48,7 @@ router.get('/register', showUserRegistrationForm);
 router.get('/login', showLoginForm);
 router.get('/logout', processLogout);
 router.get('/dashboard', requireLogin, showDashboard); // Protect the dashboard route with requireLogin middleware
+router.get('/users', requireRole('admin'), showUsersPage); // Protect the users route with requireRole middleware
 
 // Route to handle organization form submission
 router.post("/new-organization", requireRole('admin'), organizationValidation, processNewOrganizationForm);

@@ -1,5 +1,5 @@
 import bcrypt from 'bcrypt';
-import { createUser, authenticateUser } from '../models/users.js';
+import { createUser, authenticateUser, getAllUsers } from '../models/users.js';
 
 // Function to show user registration form
 const showUserRegistrationForm = (req, res) => {
@@ -101,13 +101,15 @@ const requireRole = (role) => {
         // Check if user is logged in first
         if (!req.session || !req.session.user) {
             req.flash('error', 'You must be logged in to access this page.')
+           
             return res.redirect('/login');
         }
 
         // Check if the user's role matches the required role
         if (req.session.user.role_name !== role) {
             req.flash('error', 'You do not have permission to access this page.');
-            return res.redirect('/');
+            
+            return res.redirect('/dashboard'); // Redirect to dashboard or another appropriate page
         }
 
         // User has required role, continue
@@ -122,13 +124,31 @@ const showDashboard = (req, res) => {
     res.render('dashboard', {
         title: 'Dashboard',
         name: user.name,
-        email: user.email
+        email: user.email,
+        role: user.role_name
     });
+};
+
+// Show all users function
+const showUsersPage = async (req, res) => {
+    try {
+        const users = await getAllUsers();
+
+        res.render('users', {
+            title: 'Registered Users',
+            users: users
+        });
+    } catch (error) {
+        console.error('Error retrieving users:', error);
+        req.flash('error', 'An error occurred while retrieving the users.');
+
+        res.redirect('/dashboard');
+    }
 };
 
 // Export functions to be used in routes
 export {
     showUserRegistrationForm, processUserRegistrationForm,
-    showLoginForm, processLoginForm, processLogout,
+    showLoginForm, processLoginForm, processLogout, showUsersPage,
     requireLogin, showDashboard, requireRole
 };   

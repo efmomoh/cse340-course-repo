@@ -14,7 +14,7 @@ const createUser = async (name, email, passwordHash) => {
     const result = await db.query(query, queryParams);
 
     if (result.rows.length === 0) {
-        throw new Error('Failed to creat user.');
+        throw new Error('Failed to create new user.');
     }
 
     if (process.env.ENABLE_SQL_LOGGING === 'true') {
@@ -43,6 +43,22 @@ const findUserByEmail = async (email) => {
     return result.rows[0];
 };
 
+// Get all users function
+const getAllUsers = async () => {
+    const query = `
+        SELECT
+            u.user_id,
+            u.name,
+            u.email,
+            r.role_name
+        FROM users u
+        JOIN roles r ON u.role_id = r.role_id
+        ORDER BY u.user_id
+    `;
+    const result = await db.query(query);
+    return result.rows;
+};
+
 // Create a function named verifyPassword that accepts a plain text password and a hashed password as parameters. 
 // It then uses bcrypt.compare() to check if they match. Return true if they match, false if they do not
 const verifyPassword = async (password, passwordHash) => {
@@ -57,15 +73,15 @@ const authenticateUser = async (email, password) => {
     }
 
     const isValid = await verifyPassword(password, user.password_hash);
-    
+
     if (!isValid) {
         return null; // Password does not match
     }
-    
+
     // delete user.password_hash; // Remove password hash before returning user object
-    
+
     return user; // Authentication successful
 };
 
 // Export functions to the controller layer
-export { createUser, authenticateUser };
+export { createUser, authenticateUser, getAllUsers };
