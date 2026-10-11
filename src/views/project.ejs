@@ -44,15 +44,40 @@
                 <% }); %>
         </ul>
 
-        <!-- Add a link to assign categories to the project if the user is an admin -->
-        <% if (user && user.role_name==='admin' ) { %>
-            <p> <a href="/assign-categories/<%= project.project_id %>">Edit Categories</a> </p>
+        <!-- Volunteer signup controls for logged-in users -->
+        <% if (user) { %>
+            <section class="volunteer-section">
+                <h3>Volunteer for this Project</h3>
+
+                <% if (isVolunteering) { %>
+                    <p>You are volunteering for this project.</p>
+
+                    <form action="/project/<%= project.project_id %>/withdraw" method="POST">
+                        <button type="submit">Withdraw from Project</button>
+                    </form>
+                    <% } else { %>
+                        <p>Would you like to help with this service project?</p>
+
+                        <form action="/project/<%= project.project_id %>/volunteer" method="POST">
+                            <button type="submit">Volunteer for this Project</button>
+                        </form>
+                        <% } %>
+
+                            <p><a href="/dashboard">Back to Dashboard</a></p>
+                            <p><a href="/projects">Browse More Projects</a></p>
+            </section>
             <% } %>
 
-                <!-- Add a link to edit the project if the user is an admin -->
+
+                <!-- Add a link to assign categories to the project if the user is an admin -->
                 <% if (user && user.role_name==='admin' ) { %>
-                    <p><a href="/edit-project/<%= project.project_id %>">Edit Project</a></p>
+                    <p> <a href="/assign-categories/<%= project.project_id %>">Edit Categories</a> </p>
                     <% } %>
+
+                        <!-- Add a link to edit the project if the user is an admin -->
+                        <% if (user && user.role_name==='admin' ) { %>
+                            <p><a href="/edit-project/<%= project.project_id %>">Edit Project</a></p>
+                            <% } %>
     </main>
 
     <%- include("partials/footer") %>

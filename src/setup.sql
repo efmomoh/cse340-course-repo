@@ -290,3 +290,19 @@ SELECT users.user_id, users.email, roles.role_name
 	JOIN roles 
 	ON users.role_id = roles.role_id;
 
+-- Additional feature: Signup for a service project volunteer
+CREATE TABLE IF NOT EXISTS project_volunteers (
+    user_id INTEGER NOT NULL, -- Foreign key referencing the users table
+    project_id INTEGER NOT NULL, -- Foreign key referencing the service_project table
+	signup_date TIMESTAMP DEFAULT CURRENT_TIMESTAMP, -- Record the date and time of signup
+
+    PRIMARY KEY (user_id, project_id),
+
+    FOREIGN KEY (user_id)
+        REFERENCES users(user_id)
+        ON DELETE CASCADE, -- If a user is deleted, remove their volunteer signups as well
+
+    FOREIGN KEY (project_id)
+        REFERENCES service_project(project_id)
+        ON DELETE CASCADE -- If a project is deleted, remove all associated volunteer signups
+);

@@ -678,6 +678,166 @@ form button:focus-visible {
     outline-offset: 3px;
 }
 
+/* =========================================================
+   VOLUNTEER PROJECTS
+   ========================================================= */
+
+.volunteer-projects {
+    margin-top: 32px;
+    padding-top: 24px;
+    border-top: 1px solid var(--color-border);
+}
+
+.volunteer-projects h2 {
+    margin-bottom: 16px;
+    color: var(--color-primary);
+    text-align: center;
+}
+
+/* Project count and empty-state messages */
+.volunteer-projects>p {
+    max-width: 100%;
+    margin: 0 0 20px;
+    padding: 14px 16px;
+    background-color: var(--color-background);
+    border: 1px solid var(--color-border);
+    border-radius: var(--border-radius);
+    color: var(--color-text-muted);
+    text-align: center;
+}
+
+.volunteer-projects>p a {
+    display: inline-block;
+    margin-left: 4px;
+    font-weight: 700;
+}
+
+/* Volunteer project cards */
+.volunteer-projects .project-list {
+    width: 100%;
+    max-width: 100%;
+    margin: 20px 0;
+    padding: 0;
+    list-style: none;
+}
+
+.volunteer-projects .project-list li {
+    margin-bottom: 20px;
+    padding: 24px;
+    background-color: var(--color-surface);
+    border: 1px solid var(--color-border);
+    border-left: 5px solid var(--color-secondary);
+    border-radius: var(--border-radius);
+    box-shadow: var(--box-shadow);
+    transition: border-color 0.2s ease,
+        transform 0.2s ease;
+}
+
+.volunteer-projects .project-list li:hover {
+    border-color: var(--color-secondary);
+    border-left-color: var(--color-secondary);
+    transform: translateY(-2px);
+}
+
+/* Project titles */
+.volunteer-projects .project-list h3 {
+    margin: 0 0 16px;
+    text-align: left;
+    font-size: 1.2rem;
+}
+
+.volunteer-projects .project-list h3 a {
+    color: var(--color-primary);
+    text-decoration: none;
+}
+
+.volunteer-projects .project-list h3 a:hover {
+    color: var(--color-secondary);
+    text-decoration: underline;
+}
+
+/* Project details */
+.volunteer-projects .project-list li p {
+    max-width: 100%;
+    margin: 0 0 10px;
+    color: var(--color-text-muted);
+    text-align: left;
+    overflow-wrap: anywhere;
+}
+
+.volunteer-projects .project-list li strong {
+    color: var(--color-primary);
+}
+
+/* Withdraw form */
+.volunteer-projects .project-list form {
+    max-width: 100%;
+    margin: 18px 0 0;
+    text-align: left;
+}
+
+.volunteer-projects .project-list form button {
+    padding: 10px 18px;
+    background-color: var(--color-error);
+    color: var(--color-surface);
+    border: 1px solid var(--color-error);
+    border-radius: 4px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: background-color 0.2s ease,
+        border-color 0.2s ease;
+}
+
+.volunteer-projects .project-list form button:hover {
+    background-color: #5a171d;
+    border-color: #5a171d;
+}
+
+.volunteer-projects .project-list form button:focus-visible {
+    outline: 3px solid var(--color-accent);
+    outline-offset: 3px;
+}
+
+/* Keyboard focus for project links */
+.volunteer-projects .project-list h3 a:focus-visible {
+    outline: 3px solid var(--color-accent);
+    outline-offset: 3px;
+    border-radius: 2px;
+}
+
+/* =========================================================
+   VOLUNTEER PROJECTS - RESPONSIVE
+   ========================================================= */
+
+@media (max-width: 700px) {
+    .volunteer-projects .project-list li {
+        padding: 20px;
+    }
+}
+
+@media (max-width: 480px) {
+    .volunteer-projects {
+        margin-top: 24px;
+        padding-top: 20px;
+    }
+
+    .volunteer-projects .project-list li {
+        padding: 16px;
+    }
+
+    .volunteer-projects .project-list h3 {
+        font-size: 1.1rem;
+    }
+
+    .volunteer-projects .project-list form button {
+        width: 100%;
+    }
+
+    .volunteer-projects>p {
+        padding: 12px;
+    }
+}
+
 
 /* =========================================================
    GENERAL RESPONSIVE TABLET
@@ -776,9 +936,9 @@ form button:focus-visible {
         font-size: 16px;
     }
 
-    form button {
+    /* form button {
         width: 100%;
-    }
+    } */
 
     /* ---------- Flash Messages ---------- */
     .alert {
