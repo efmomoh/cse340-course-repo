@@ -1,5 +1,11 @@
 import bcrypt from 'bcrypt';
-import { createUser, authenticateUser, getAllUsers } from '../models/users.js';
+import {
+    createUser, authenticateUser, getAllUsers
+} from '../models/users.js';
+
+import {
+    getVolunteerProjects
+} from '../models/projects.js';
 
 // Function to show user registration form
 const showUserRegistrationForm = (req, res) => {
@@ -101,14 +107,14 @@ const requireRole = (role) => {
         // Check if user is logged in first
         if (!req.session || !req.session.user) {
             req.flash('error', 'You must be logged in to access this page.')
-           
+
             return res.redirect('/login');
         }
 
         // Check if the user's role matches the required role
         if (req.session.user.role_name !== role) {
             req.flash('error', 'You do not have permission to access this page.');
-            
+
             return res.redirect('/dashboard'); // Redirect to dashboard or another appropriate page
         }
 
@@ -118,16 +124,34 @@ const requireRole = (role) => {
 };
 
 // create a route and controller function to display the dashboard page
-const showDashboard = (req, res) => {
+
+const showDashboard = async (req, res) => {
     const user = req.session.user;
 
-    res.render('dashboard', {
-        title: 'Dashboard',
-        name: user.name,
-        email: user.email,
-        role: user.role_name
-    });
+    try {
+        const volunteerProjects = await getVolunteerProjects(user.user_id);
+
+        return res.render('dashboard', {
+            title: 'Dashboard',
+            name: user.name,
+            email: user.email,
+            role: user.role_name,
+            volunteerProjects
+        });
+    } catch (error) {
+        console.error('Error retrieving volunteer projects:', error);
+        req.flash('error', 'Unable to load your volunteer projects.');
+
+        return res.status(500).render('dashboard', {
+            title: 'Dashboard',
+            name: user.name,
+            email: user.email,
+            role: user.role_name,
+            volunteerProjects: []
+        });
+    }
 };
+
 
 // Show all users function
 const showUsersPage = async (req, res) => {

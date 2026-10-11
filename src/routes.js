@@ -16,7 +16,8 @@ import {
     showProjectsPage, showProjectDetailsPage,
     showNewProjectForm, processNewProjectForm,
     projectValidation, showEditProjectForm,
-    processEditProjectForm
+    processEditProjectForm, volunteerForProject,
+    removeVolunteerSignup
  } from "./controllers/projects.js";
 import {
     showCategoriesPage, showCategoryDetailsPage,
@@ -60,6 +61,8 @@ router.post("/new-category", requireRole('admin'), categoryValidation, processNe
 router.post("/edit-category/:id", requireRole('admin'), categoryValidation, processEditCategoryForm);
 router.post('/register', processUserRegistrationForm);
 router.post('/login', processLoginForm);
+router.post('/project/:id/volunteer', requireLogin, volunteerForProject); // Protect the volunteer route with requireLogin middleware
+router.post('/project/:id/withdraw', requireLogin, removeVolunteerSignup); // Protect the remove volunteer route with requireLogin middleware
 
 // Error handling route for testing 500 errors
 router.get("/test-error", testErrorPage);

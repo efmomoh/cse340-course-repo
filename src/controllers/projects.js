@@ -2,7 +2,9 @@
 import { body, validationResult } from "express-validator";
 import {
     getUpcomingProjects, getProjectDetails,
-    createProject, updateProject
+    createProject, updateProject,
+    addVolunteerToProject, removeVolunteerFromProject,
+    isUserVolunteering
 } from "../models/projects.js";
 import {
     getCategoriesByProjectId
@@ -10,7 +12,7 @@ import {
 } from "../models/categories.js";
 import { getAllOrganizations } from "../models/organizations.js";
 
-// Define validation and sanitation rules for project data 
+// Define validation and sanitation rules for project data for database integrity and security
 const projectValidation = [
     body('title')
         .trim()
@@ -47,12 +49,81 @@ const showProjectsPage = async (req, res) => {
 const showProjectDetailsPage = async (req, res) => {
     const projectId = req.params.id;
     const project = await getProjectDetails(projectId);
+
+    // If the project is not found, redirect to the projects page with an error message
+    if (!project) {
+        req.flash('error', 'Project not found.');
+        return res.redirect('/projects');
+    }
+
     const categories = await getCategoriesByProjectId(projectId);
+
+    const user = req.session.user; // Assuming user info is stored in session
+    let isVolunteering = false; // Initialize isVolunteering to false
+
+    // Check if the user is logged in and if they are volunteering for this project
+    if (user) {
+        isVolunteering = await isUserVolunteering(user.user_id, projectId);
+    }
+
     const title = "Project Details";
 
-    res.render("project", { title, project, categories });
+    res.render("project",
+        {
+            title,
+            project, 
+            categories,
+            isVolunteering
+        });
 
 };
+
+/* Sign up the logged-in user to volunteer for a project */
+const volunteerForProject = async (req, res) => {
+    const projectId = req.params.id;
+    const userId = req.session.user.user_id;
+
+    try {
+        const project = await getProjectDetails(projectId);
+
+        if (!project) {
+            req.flash("error", "Service project not found.");
+            return res.redirect("/projects");
+        }
+
+        const added = await addVolunteerToProject(userId, projectId);
+
+        if (added) {
+            req.flash("success", "You have signed up to volunteer for this project.");
+        } else {
+            req.flash("success", "You are already volunteering for this project.");
+        }
+
+        return res.redirect(`/project/${projectId}`);
+    } catch (error) {
+        console.error("Error signing up to volunteer:", error);
+        req.flash("error", "Unable to sign up for this project.");
+        return res.redirect(`/project/${projectId}`);
+    }
+};
+
+/* Remove the logged-in user's volunteer signup */
+const removeVolunteerSignup = async (req, res) => {
+    const projectId = req.params.id;
+    const userId = req.session.user.user_id;
+
+    try {
+        await removeVolunteerFromProject(userId, projectId);
+
+        req.flash("success", "You have withdrawn from this project.");
+        return res.redirect(`/project/${projectId}`);
+    } catch (error) {
+        console.error("Error removing volunteer signup:", error);
+        req.flash("error", "Unable to withdraw from this project.");
+        return res.redirect(`/project/${projectId}`);
+    }
+};
+
 
 // Create the controller functions to serve the new project form and to process the form submission.
 const showNewProjectForm = async (req, res) => {
@@ -106,18 +177,18 @@ const showEditProjectForm = async (req, res) => {
 
 // create process Edit Project Form
 const processEditProjectForm = async (req, res) => {
-       // Check for validation errors
-       const results = validationResult(req);
-       if (!results.isEmpty()) {
-           // Validation failed - loop through errors
-           results.array().forEach((error) => {
-               req.flash('error', error.msg);
-           });
-   
-           // Redirect back to the edit organization form
-           return res.redirect('/edit-project/' + req.params.id);
+    // Check for validation errors
+    const results = validationResult(req);
+    if (!results.isEmpty()) {
+        // Validation failed - loop through errors
+        results.array().forEach((error) => {
+            req.flash('error', error.msg);
+        });
+
+        // Redirect back to the edit organization form
+        return res.redirect('/edit-project/' + req.params.id);
     }
-    
+
     // get project's ID
     const projectId = req.params.id;
     const { title, description, location, date, organizationId } = req.body;
@@ -132,6 +203,8 @@ export {
     projectValidation,
     showProjectsPage,
     showProjectDetailsPage,
+    volunteerForProject,
+    removeVolunteerSignup,
     showNewProjectForm,
     processNewProjectForm,
     showEditProjectForm,
